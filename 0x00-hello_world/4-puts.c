@@ -1,6 +1,6 @@
 /*
  * File: 4-puts.c
- * Auth:kobbycyber
+ * Auth: kobbycyber
  */
 
 #include <stdio.h>
