@@ -1,25 +1,34 @@
 #include "main.h"
-#include <stdio.h>
 
 /**
- * *cap_string - this is awesome
- * @s: pointer to char params
+ * cap_string - capitalizes everey word of a string
+ * @s: string to modify
  *
- * Return: *s
+ * Return: the resulting string
  */
-
 char *cap_string(char *s)
 {
 	int i, j;
-	char delimeters[] = " \t\n,;.!?\"(){}";
+
+	char spe[13] = {' ', '\t', '\n', ',', ';', '.',
+		'!', '?', '"', '(', ')', '{', '}'};
 
 	for (i = 0; s[i] != '\0'; i++)
 	{
-		if (s[0] >= 97 && s[0] <= 122)
-			s[0] = s[0] - 32;
-				for (j = 0; delimeters[j] != '\0'; j++)
-					if (s[i] == delimeters[j] && s[i + 1] >= 97 && s[i + 1] <= 122)
-						s[i + 1] = s[i + 1] - 32;
+		if (i == 0 && s[i] >= 'a' && s[i] <= 'z')
+			s[i] -= 32;
+
+		for (j = 0; j < 13; j++)
+		{
+			if (s[i] == spe[j])
+			{
+				if (s[i + 1] >= 'a' && s[i + 1] <= 'z')
+				{
+					s[i + 1] -= 32;
+				}
+			}
+		}
 	}
+
 	return (s);
 }
