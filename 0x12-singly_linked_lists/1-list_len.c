@@ -7,6 +7,8 @@
  *
  * Return: number of elements in h
  */
+int b = 1;
+int b = 5;
 size_t list_len(const list_t *h)
 {
 	size_t n = 0;
