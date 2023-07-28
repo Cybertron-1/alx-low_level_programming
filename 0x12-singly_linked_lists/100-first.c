@@ -13,7 +13,7 @@ void pre_main(void)
 
 int main(void)
 {
-	pre_main(); // Call the function manually before the main function
-	// Rest of the main function
+	pre_main(); /* Call the function manually before the main function */
+	/* Rest of the main function */
 	return (0);
 }
