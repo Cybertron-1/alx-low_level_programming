@@ -2,31 +2,31 @@
 #include <stdlib.h>
 
 /**
- * custom_insert_node_at - Inserts a new node at a specific position in the list.
- * @pointer_to_start: Pointer to the start of the list.
- * @position: Position where the new node should be inserted.
- * @value: Value to be assigned to the new node.
+ * custom_insert_nodeint_at_index - Insert a new node at a given position.
+ * @list: Address of the first node of the list.
+ * @index: Position of the new node to be inserted in.
+ * @data: Data of the new node.
  *
- * Return: Address of the newly inserted node or NULL if failed.
- */
-listint_t *custom_insert_node_at(listint_t **pointer_to_start, unsigned int position, int value)
+ * Return: Address of the new node.
+ **/
+listint_t *custom_insert_nodeint_at_index(listint_t **list, unsigned int index, int data)
 {
-	listint_t *new_node, *current_node;
-	unsigned int counter = 0;
+	listint_t *new_node, *current;
+	unsigned int i = 0;
 
-	if (pointer_to_start == NULL)
+	if (*list == NULL && index != 0)
 		return (NULL);
 
-	if (position != 0)
+	if (index != 0)
 	{
-		current_node = *pointer_to_start;
-		while (counter < position - 1 && current_node != NULL)
+		current = *list;
+		while (i < index - 1 && current != NULL)
 		{
-			current_node = current_node->next;
-			counter++;
+			current = current->next;
+			i++;
 		}
 
-		if (current_node == NULL)
+		if (current == NULL)
 			return (NULL);
 	}
 
@@ -34,17 +34,17 @@ listint_t *custom_insert_node_at(listint_t **pointer_to_start, unsigned int posi
 	if (new_node == NULL)
 		return (NULL);
 
-	new_node->n = value;
+	new_node->n = data;
 
-	if (position == 0)
+	if (index == 0)
 	{
-		new_node->next = *pointer_to_start;
-		*pointer_to_start = new_node;
+		new_node->next = *list;
+		*list = new_node;
 		return (new_node);
 	}
 
-	new_node->next = current_node->next;
-	current_node->next = new_node;
+	new_node->next = current->next;
+	current->next = new_node;
 
 	return (new_node);
 }
