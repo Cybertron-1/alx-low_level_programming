@@ -23,10 +23,9 @@ listint_t *find_listint_loop(listint_t *head)
 
 		if (slow == fast)
 		{
-			/* Loop detected, reset slow to head and start from the beginning */
-			slow = head;
+			/* Loop detected, reset fast to head and move both pointers one node at a time */
+			fast = head;
 
-			/* Move slow and fast at the same pace until they meet again */
 			while (slow != fast)
 			{
 				slow = slow->next;
