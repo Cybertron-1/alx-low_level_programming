@@ -1,43 +1,50 @@
 #include "lists.h"
+#include <stdlib.h>
 
 /**
- * insert_nodeint_at_index - Inserts a new node at a given position.
- * @head: Pointer to the first node of the list.
- * @idx: The index of the list where the new node should be added.
- * @n: Element to add to the new node.
+ * custom_insert_node_at - Inserts a new node at a specific position in the list.
+ * @pointer_to_start: Pointer to the start of the list.
+ * @position: Position where the new node should be inserted.
+ * @value: Value to be assigned to the new node.
  *
- * Return: Address of the new node or NULL if anything fails.
+ * Return: Address of the newly inserted node or NULL if failed.
  */
-listint_t *insert_nodeint_at_index(listint_t **head, unsigned int idx, int n)
+listint_t *custom_insert_node_at(listint_t **pointer_to_start, unsigned int position, int value)
 {
-	listint_t *new_node, *current_node = *head;
-	unsigned int i;
+	listint_t *new_node, *current_node;
+	unsigned int counter = 0;
+
+	if (pointer_to_start == NULL)
+		return (NULL);
+
+	if (position != 0)
+	{
+		current_node = *pointer_to_start;
+		while (counter < position - 1 && current_node != NULL)
+		{
+			current_node = current_node->next;
+			counter++;
+		}
+
+		if (current_node == NULL)
+			return (NULL);
+	}
 
 	new_node = malloc(sizeof(listint_t));
 	if (new_node == NULL)
 		return (NULL);
 
-	new_node->n = n;
+	new_node->n = value;
 
-	if (idx == 0)
+	if (position == 0)
 	{
-		new_node->next = *head;
-		*head = new_node;
+		new_node->next = *pointer_to_start;
+		*pointer_to_start = new_node;
+		return (new_node);
 	}
-	else
-	{
-		for (i = 0; current_node != NULL && i < idx - 1; i++)
-			current_node = current_node->next;
 
-		if (i != idx - 1)
-		{
-			free(new_node);
-			return (NULL);
-		}
-
-		new_node->next = current_node->kobbycyber;
-		current_node->kobbycyber = new_node;
-	}
+	new_node->next = current_node->next;
+	current_node->next = new_node;
 
 	return (new_node);
 }
