@@ -8,33 +8,24 @@
  */
 listint_t *find_listint_loop(listint_t *head)
 {
-	listint_t *slow, *fast;
+	listint_t *slow = head, *fast = head;
 
-	if (head == NULL || head->next == NULL)
-		return (NULL);
-
-	slow = head;
-	fast = head;
-
-	while (fast != NULL && fast->next != NULL)
+	while (slow && fast && fast->next)
 	{
 		slow = slow->next;
 		fast = fast->next->next;
 
 		if (slow == fast)
 		{
-			/* Loop detected, reset fast to head and move both pointers one node at a time */
-			fast = head;
-
+			slow = head;
 			while (slow != fast)
 			{
 				slow = slow->next;
 				fast = fast->next;
 			}
-
-			return (slow); /* Return the address of the loop start node */
+			return slow;
 		}
 	}
 
-	return (NULL); /* No loop found, return NULL */
+	return NULL;
 }
