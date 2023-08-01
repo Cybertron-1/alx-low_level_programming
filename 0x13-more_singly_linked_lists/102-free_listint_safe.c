@@ -8,10 +8,9 @@
  */
 size_t free_listint_safe(listint_t **head)
 {
-	listint_t *current;
 	size_t elements_freed = 0;
 	int differentiation;
-	
+	listint_t *current;
 
 	if (!head || !*head)
 		return (0);
