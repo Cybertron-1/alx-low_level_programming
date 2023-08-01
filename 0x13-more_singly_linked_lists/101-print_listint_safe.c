@@ -7,29 +7,31 @@
  */
 size_t print_listint_safe(const listint_t *head)
 {
-	const listint_t *fast, *slow;
-	size_t nnodes = 0;
+	const listint_t *current = NULL;
+	const listint_t *check_node = NULL;
+	size_t counter = 0;
+	size_t new_counter;
 
-	slow = fast = head;
-
-	while (fast != NULL && fast->next != NULL)
+	current = head;
+	while (current)
 	{
-		slow = slow->next;
-		fast = fast->next->next;
-
-		if (slow == fast)
+		printf("[%p] %d\n", (void *)current, current->n);
+		counter++;
+		current = current->next;
+		check_node = head;
+		new_counter = 0;
+		while (new_counter < counter)
 		{
-			printf("Loop detected, stopping printing...\n");
-			return (nnodes);
+			if (current == check_node)
+			{
+				printf("-> [%p] %d\n", (void *)current, current->n);
+				return (counter);
+			}
+			check_node = check_node->next;
+			new_counter++;
 		}
+		if (!head)
+			exit(98);
 	}
-
-	while (head != NULL)
-	{
-		printf("[%p] %d\n", (void *)head, head->n);
-		head = head->next;
-		nnodes++;
-	}
-
-	return (nnodes);
+	return (counter);
 }
