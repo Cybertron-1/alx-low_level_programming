@@ -1,48 +1,70 @@
 #include "lists.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 /**
- * print_listint_safe - Prints a listint_t linked list safely.
- * @head: Pointer to the first node of the list.
+ * free_listp - frees a linked list
+ * @head: head of a list.
  *
- * Return: The number of nodes in the list.
+ * Return: no return.
+ */
+void free_listp(listp_t **head)
+{
+	listp_t *temp;
+	listp_t *curr;
+
+	if (head != NULL)
+	{
+		curr = *head;
+		while ((temp = curr) != NULL)
+		{
+			curr = curr->next;
+			free(temp);
+		}
+		*head = NULL;
+	}
+}
+
+/**
+ * print_listint_safe - prints a linked list.
+ * @head: head of a list.
+ *
+ * Return: number of nodes in the list.
  */
 size_t print_listint_safe(const listint_t *head)
 {
-	const listint_t *slow, *fast;
-	size_t count = 0;
+	size_t nnodes = 0;
+	listp_t *visited = NULL;
+	listp_t *new_node = NULL;
+	listp_t *checker = NULL;
 
-	slow = head;
-	fast = head;
-
-	while (slow != NULL && fast != NULL && fast->next != NULL)
+	while (head != NULL)
 	{
-		printf("[%p] %d\n", (void *)slow, slow->n);
-		slow = slow->next;
-		fast = fast->next->next;
+		new_node = malloc(sizeof(listp_t));
 
-		if (slow == fast)
+		if (new_node == NULL)
+			exit(98);
+
+		new_node->p = (void *)head;
+		new_node->next = visited;
+		visited = new_node;
+
+		checker = visited;
+
+		while (checker->next != NULL)
 		{
-			/* List contains a loop */
-			slow = head;
-			count = 0;
-
-			while (slow != fast)
+			checker = checker->next;
+			if (head == checker->p)
 			{
-				printf("[%p] %d\n", (void *)slow, slow->n);
-				slow = slow->next;
-				fast = fast->next;
-				count++;
+				printf("-> [%p] %d\n", (void *)head, head->n);
+				free_listp(&visited);
+				return (nnodes);
 			}
-
-			printf("[%p] %d\n", (void *)slow, slow->n);
-			printf("-> [%p] %d\n", (void *)fast, fast->n);
-			return (count + 1);
 		}
 
-		count++;
+		printf("[%p] %d\n", (void *)head, head->n);
+		head = head->next;
+		nnodes++;
 	}
 
-	return (count);
+	free_listp(&visited);
+	return (nnodes);
 }
