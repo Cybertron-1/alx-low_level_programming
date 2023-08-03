@@ -8,17 +8,17 @@
  */
 int clear_bit(unsigned long int *n, unsigned int index)
 {
-	unsigned long int i;
-	unsigned int hold;
+	unsigned long int c;
+	unsigned int holdaddress;
 
 	if (index > 64)
 		return (-1);
 	hold = index;
-	for (i = 1; hold > 0; i *= 2, hold--)
+	for (c = 1; holdaddress > 0; c *= 2, holdaddress--)
 		;
 
 	if ((*n >> index) & 1)
-		*n -= i;
+		*n -= c;
 
 	return (1);
 }
