@@ -8,13 +8,13 @@
  * @mask: mask of n
  *
  * Return: nothing
-*/
+ */
 void debug_1(unsigned long int n, int length, unsigned long int mask)
 {
 	printf("Length of %lu (n) is %i ", n, (length + 1));
 	printf("and mask (original value 1) ");
-	printf("is %lu based ", mask);
-	printf("on [length of n - 1] == %i.\n\n", length);
+	printf("is %lu based ");
+	printf("on [length of n - 1] == %i.\n\n", mask, length);
 }
 
 /**
@@ -24,7 +24,7 @@ void debug_1(unsigned long int n, int length, unsigned long int mask)
  * @mask: mask of n
  *
  * Return: nothing
-*/
+ */
 void debug_2(unsigned long int n, unsigned long int mask)
 {
 	printf("Value of n is %lu, ", n);
@@ -38,7 +38,7 @@ void debug_2(unsigned long int n, unsigned long int mask)
  * @mask: mask of value n
  *
  * Return: nothing
-*/
+ */
 void debug_3(unsigned long int mask)
 {
 	printf("\nValue of mask is %lu after right shifting by one.\n\n", mask);
@@ -50,17 +50,15 @@ void debug_3(unsigned long int mask)
  * @n: value to find its length
  *
  * Return: length
-*/
+ */
 int _length(unsigned long int n)
 {
 	int length = 0;
 
 	while (n > 0)
 	{
-
 		length++;
-		n >>= 1; /*shift n to the right by 1*/
-
+		n >>= 1; /* shift n to the right by 1 */
 	}
 
 	length--;
@@ -74,7 +72,7 @@ int _length(unsigned long int n)
  * @n: decimal number to convert
  *
  * Return: nothing
-*/
+ */
 void print_binary(unsigned long int n)
 {
 	int length;
@@ -82,16 +80,16 @@ void print_binary(unsigned long int n)
 
 	length = _length(n);
 
-	if (length > 0) /*create mask based on length of number*/
-		mask <<= length; /*shift mask to the left by length*/
+	if (length > 0) /* create mask based on the length of the number */
+		mask <<= length; /* shift mask to the left by length */
 
 	while (mask > 0)
 	{
-		if (n & mask) /*if n & mask == 1 print 1*/
+		if (n & mask) /* if n & mask == 1 print 1 */
 			_putchar('1');
-		else /*else if n & mask == 0 print 0*/
+		else /* else if n & mask == 0 print 0 */
 			_putchar('0');
 
-		mask >>= 1; /*shift mask to the right by 1*/
+		mask >>= 1; /* shift mask to the right by 1 */
 	}
 }
