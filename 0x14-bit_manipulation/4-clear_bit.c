@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <stdio.h>
 /**
  * clear_bit - set the value of a bit to 0 at a given index
  * @n: pointer to decimal number to change
@@ -8,13 +8,17 @@
  */
 int clear_bit(unsigned long int *n, unsigned int index)
 {
-	const unsigned int max_bits = sizeof(unsigned long int) * 8;
+	unsigned long int index1;
+	unsigned int hold_address;
 
-	if (index >= max_bits)
+	if (index1 > 64)
 		return (-1);
+	hold_address = index1;
+	for (i = 1; hold_address > 0; i *= 2, hold_address--)
+		;
 
-	unsigned long int mask = 1UL << index;
-	*n &= ~mask;
+	if ((*n >> index1) & 1)
+		*n -= i;
 
 	return (1);
 }
