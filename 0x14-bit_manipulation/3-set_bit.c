@@ -8,13 +8,14 @@
  */
 int set_bit(unsigned long int *n, unsigned int index)
 {
-	const unsigned int max_bits = sizeof(unsigned long int) * 8;
+	unsigned long int pointer;
 
-	if (index >= max_bits)
+	if (index > 64)
 		return (-1);
 
-	unsigned long int mask = 1UL << index;
-	*n |= mask;
+	for (pointer = 1; index > 0; index--, pointer *= 2)
+		;
+	*n += pointer;
 
 	return (1);
 }
