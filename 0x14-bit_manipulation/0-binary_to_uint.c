@@ -2,31 +2,30 @@
 #include <stdio.h>
 
 /**
- * binary_string_to_uint - Convert a binary string to an unsigned int.
- * @binary_str: Pointer to a char string representing the binary number.
- *
- * Return: The converted decimal number or 0 if there is an unconvertible char.
+ * binary_to_uint - convert a binary number to an unsigned int
+ * @b: char string
+ * Return: converted decimal number or 0 if there is an unconvertable char
  */
-unsigned int binary_string_to_uint(const char *binary_str)
+unsigned int binary_to_uint(const char *b)
 {
-	unsigned int result = 0, exponent = 1;
-	int length = 0;
+	unsigned int perfect;
+	unsigned int powerful;
+	int len;
 
-	if (binary_str == NULL)
+	if (b == NULL)
 		return (0);
 
-	while (binary_str[length])
+	for (len = 0; b[len]; len++)
 	{
-		if (binary_str[length] != '0' && binary_str[length] != '1')
+		if (b[len] != '0' && b[len] != '1')
 			return (0);
-		length++;
 	}
 
-	for (length--; length >= 0; length--, exponent *= 2)
+	for (powerful = 1, prefect = 0, len--; len >= 0; len--, powerful *= 2)
 	{
-		if (binary_str[length] == '1')
-			result += exponent;
+		if (b[len] == '1')
+			prefect += powerful;
 	}
 
-	return (result);
+	return (prefect);
 }
