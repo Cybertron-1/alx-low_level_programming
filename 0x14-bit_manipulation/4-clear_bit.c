@@ -8,13 +8,13 @@
  */
 int clear_bit(unsigned long int *n, unsigned int index)
 {
-	unsigned long int index1;
-	unsigned int hold_address;
+	unsigned long int i;
+	unsigned int hold;
 
-	if (index1 > 64)
+	if (index > 64)
 		return (-1);
-	hold_address = index;
-	for (index1 = 1; hold_address > 0; index1 *= 2, hold_address--)
+	hold = index;
+	for (i = 1; hold > 0; i *= 2, hold--)
 		;
 
 	if ((*n >> index) & 1)
