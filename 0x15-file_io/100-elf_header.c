@@ -1,14 +1,14 @@
 #include "main.h"
 /**
- *main - displays the contents of an elf header in terminal
+ *main - displays the contents of an elf header
  *@argc:arguement count
  *@argv:argurment vector
- *Description: ./elf_header elf_file to perform elf header enumerate
- *Return:0 - success if everything went through
+ *Description: ./elf_header elf_file
+ *Return:0 - success
  */
 int main(int argc, char *argv[])
 {
-	int fdan, read_l, cdata;
+	int fd, read_l, c;
 	Elf64_Ehdr *header;
 
 	if (argc != 2)
@@ -21,13 +21,13 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error in memory allocation\n");
 		exit(98);
 	}
-	fdan = open(argv[1], O_RDONLY);
-	if (fdan == -1)
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", argv[1]);
 		exit(98);
 	}
-	read_l = read(fdan, header, sizeof(Elf64_Ehdr));
+	read_l = read(fd, header, sizeof(Elf64_Ehdr));
 	if (read_l == -1)
 	{
 		dprintf(STDERR_FILENO, "Can't read file %s\n", argv[1]);
@@ -44,10 +44,43 @@ int main(int argc, char *argv[])
 	print_type(header->e_type, header->e_ident);
 	print_entry(header->e_entry, header->e_ident);
 	free(header);
-	cdata = close(fd);
-	if (cdata)
+	c = close(fd);
+	if (c)
 		dprintf(STDERR_FILENO, "Error: Can't close fd\n"), exit(98);
 	return (0);
+}
+/**
+ *elf_validation - validates whether a file is of elf format
+ *@e_ident:file desc
+ */
+void elf_validation(unsigned char *e_ident)
+{
+	if (e_ident[0] == 0x7f && e_ident[1] == 'E' && e_ident[2] == 'L' && e_ident[3] == 'F')
+	{
+		printf("ELF Header:\n");
+	}
+	else
+	{
+		dprintf(STDERR_FILENO, "Error: File not an ELF\n");
+		exit(98);
+	}
+}
+/**
+ *print_magic - prints an elf's magic no.
+ *@e_ident:file description
+ */
+void print_magic(unsigned char *e_ident)
+{
+	int i;
+
+	printf("  Magic:   ");
+	i = 0;
+	while (i < EI_NIDENT - 1)
+	{
+		printf("%02x ", e_ident[i]);
+		i++;
+	}
+	printf("%02x\n", e_ident[i]);
 }
 /**
  *print_class - prints an elf's class
@@ -72,23 +105,6 @@ void print_class(unsigned char *e_ident)
 	}
 }
 /**
- *print_magic - prints an elf's magic no.
- *@e_ident:file description
- */
-void print_magic(unsigned char *e_ident)
-{
-	int ident;
-
-	printf("  Magic:   ");
-	ident = 0;
-	while (ident < EI_NIDENT - 1)
-	{
-		printf("%02x ", e_ident[i]);
-		ident++;
-	}
-	printf("%02x\n", e_ident[i]);
-}
-/**
  *print_data - prints an elf's data
  *@e_ident: pointer to string
  */
@@ -111,22 +127,6 @@ void print_data(unsigned char *e_ident)
 	}
 }
 /**
- *elf_validation - validates whether a file is of elf format
- *@e_ident:file desc
- */
-void elf_validation(unsigned char *e_ident)
-{
-	if (e_ident[0] == 0x7f && e_ident[1] == 'E' && e_ident[2] == 'L' && e_ident[3] == 'F')
-	{
-		printf("ELF Header:\n");
-	}
-	else
-	{
-		dprintf(STDERR_FILENO, "Error: File not an ELF\n");
-		exit(98);
-	}
-}
-/**
  *print_version - prints an elf's version
  *@e_ident:string pointer
  */
@@ -139,8 +139,8 @@ void print_version(unsigned char *e_ident)
 		printf("%i\n", e_ident[EI_VERSION]);
 }
 /**
- *print_osabi - prints an elfs osabi osgghgfertts
- *@e_ident:string pointer defintion
+ *print_osabi - prints an elfs osabi
+ *@e_ident:string pointer
  */
 void print_osabi(unsigned char *e_ident)
 {
@@ -182,8 +182,8 @@ void print_osabi(unsigned char *e_ident)
 	}
 }
 /**
- *print_type - prints an elfs type def
- *@e_type:status int in memory
+ *print_type - prints an elfs type
+ *@e_type:status int
  *@e_ident:pointer to string
  */
 void print_type(unsigned int e_type, unsigned char *e_ident)
@@ -214,9 +214,9 @@ void print_type(unsigned int e_type, unsigned char *e_ident)
 	}
 }
 /**
- *print_entry - prints an elf's entry point
- *@e_entry:e_entry point address
- *@e_ident:pointer to char string 
+ *print_entry - prints an elf's entry
+ *@e_entry:e_entry address
+ *@e_ident:pointer to char string
  */
 void print_entry(unsigned int e_entry, unsigned char *e_ident)
 {
@@ -227,11 +227,14 @@ void print_entry(unsigned int e_entry, unsigned char *e_ident)
 	printf("%#x\n", (unsigned int)e_entry);
 }
 /**
- *lit_to_big_endian - converts hexes in little endian to big endian endianness
- *@x:int for conversion
- *Return:value in unsigned int int + int 
+ *lit_to_big_endian - converts hexes in little endian to big endian
+ *@x:int to convert
+ *Return:value in unsigned int
  */
 unsigned int lit_to_big_endian(unsigned int x)
 {
-	return (((x >> 24) & 0x000000ff) | ((x >> 8) & 0x0000ff00)  | ((x << 8) & 0x00ff0000)  | ((x << 24) & 0xff000000));
+	return (((x >> 24) & 0x000000ff) |
+		((x >> 8) & 0x0000ff00)  |
+		((x << 8) & 0x00ff0000)  |
+		((x << 24) & 0xff000000));
 }
