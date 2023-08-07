@@ -1,56 +1,65 @@
 #include "main.h"
+
 /**
- * main - copies the content of a file to another file
+ * main - Copies the content of a file to another file
  * @argc: Argument count
  * @argv: Argument vector
+ *
  * Return: 0 if success, 97, 98, 99, or 100 on failure
  */
 int main(int argc, char *argv[])
 {
-	int _file1, _file2, _read, c1, c2;
+	int src_fd, dest_fd, bytes_read, close_status1, close_status2;
 	char buffer[1024];
 
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97);
+		return (97);
 	}
-	_file1 = open(argv[1], O_RDONLY);
-	if (_file1 < 0)
+
+	src_fd = open(argv[1], O_RDONLY);
+	if (src_fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
+		return (98);
 	}
-	_file2 = open(argv[2], O_TRUNC | O_CREAT | O_WRONLY, 0664);
-	if (_file2 < 0)
+
+	dest_fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	if (dest_fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		exit(99);
+		close(src_fd);
+		return (99);
 	}
-	while ((_read = read(_file1, buffer, 1024)) > 0)
+
+	while ((bytes_read = read(src_fd, buffer, 1024)) > 0)
 	{
-		if (write(_file2, buffer, _read) != _read)
+		if (write(dest_fd, buffer, bytes_read) != bytes_read)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			exit(99);
+			close(src_fd);
+			close(dest_fd);
+			return (99);
 		}
 	}
-	if (_read < 0)
+
+	if (bytes_read < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
+		close(src_fd);
+		close(dest_fd);
+		return (98);
 	}
-	c1 = close(_file1);
-	if (c1 < 0)
+
+	close_status1 = close(src_fd);
+	close_status2 = close(dest_fd);
+
+	if (close_status1 < 0 || close_status2 < 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", _file1);
-		exit(100);
+		dprintf(STDERR_FILENO, "Error: Can't close file descriptors\n");
+		return (100);
 	}
-	c2 = close(_file2);
-	if (c2 < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", _file2);
-		exit(100);
-	}
+
 	return (0);
 }
