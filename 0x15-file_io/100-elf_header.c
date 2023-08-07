@@ -26,15 +26,15 @@ void close_elf(int elf);
  */
 void print_magic(unsigned char *e_ident)
 {
-	int indexofdent;
+	int index;
 
 	printf("  Magic:   ");
 
-	for (indexofdent = 0; indexofdent < EI_NIDENT; indexofdent++)
+	for (index = 0; index < EI_NIDENT; index++)
 	{
 		printf("%02x", e_ident[index]);
 
-		if (indexofdent == EI_NIDENT - 1)
+		if (index == EI_NIDENT - 1)
 			printf("\n");
 		else
 			printf(" ");
