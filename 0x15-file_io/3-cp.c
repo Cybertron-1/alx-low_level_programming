@@ -8,7 +8,11 @@
 
 int main(int argc, char *argv[])
 {
-	int file1, _file2, _read, c1, c2;
+	int file1;
+	int file2;
+	int _readfile;
+	int datahold1; 
+	int datahold2;
 	char buffer[1024];
 
 	if (argc != 3)
@@ -21,28 +25,28 @@ int main(int argc, char *argv[])
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-	_file2 = open(argv[2], O_TRUNC | O_CREAT | O_WRONLY, 0664);
-	while ((_read = read(file1, buffer, 1024)) > 0)
+	file2 = open(argv[2], O_TRUNC | O_CREAT | O_WRONLY, 0664);
+	while ((_readfile = read(file1, buffer, 1024)) > 0)
 	{
-		if (_file2 < 0 || (write(_file2, buffer, _read) != _read))
+		if (file2 < 0 || (write(file2, buffer, _readfile) != _readfile))
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]), exit(99);
 		}
 	}
-	if (_read < 0)
+	if (_readfile < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-	c1 = close(file1);
-	if (c1 < 0)
+	datahold1 = close(file1);
+	if (datahold1 < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", file1), exit(100);
 	}
-	c2 = close(_file2);
-	if (c2 < 0)
+	datahold2 = close(file2);
+	if (datahold2 < 0)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", _file2), exit(100);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %i\n", file2), exit(100);
 	}
 	return (0);
 }
