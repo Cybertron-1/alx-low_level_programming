@@ -6,6 +6,7 @@
  * @argv: argument vector
  * Return: 0 if success, otherwise exit with error codes
  */
+
 int main(int argc, char *argv[])
 {
 	int _file1, _file2, _read, c1, c2;
