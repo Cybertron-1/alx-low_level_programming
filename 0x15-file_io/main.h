@@ -1,7 +1,7 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-/** standard header files by kobbycyber **/
+/** standard header files **/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,8 +10,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <elf.h>
-#include <unistd.h>
-/** function prototypes below **/
+/** function prototypes here **/
 ssize_t read_textfile(const char *filename, size_t letters);
 int create_file(const char *filename, char *text_content);
 int append_text_to_file(const char *filename, char *text_content);
@@ -25,10 +24,5 @@ void print_osabi(unsigned char *e_ident);
 void print_type(unsigned int e_type, unsigned char *e_ident);
 unsigned int lit_to_big_endian(unsigned int x);
 void print_entry(unsigned int e_type, unsigned char *e_ident);
-void check_elf(unsigned char *e_ident);
-void print_magic(unsigned char *e_ident);
-void print_abi(unsigned char *e_ident);
-void print_entry(unsigned long int e_entry, unsigned char *e_ident);
-void close_elf(int elf);
 
 #endif
