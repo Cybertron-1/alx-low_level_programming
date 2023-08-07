@@ -11,7 +11,7 @@ ssize_t read_textfile(const char *filename, size_t letters)
 {
 	int _open, _read, _write;
 	char *buffer;
-	ssize_t num_letters_read = 0;
+	ssize_t num_letters_toberead = 0;
 
 	if (!filename)
 		return (0);
@@ -43,10 +43,10 @@ ssize_t read_textfile(const char *filename, size_t letters)
 		return (0);
 	}
 
-	num_letters_read = _write;
+	num_letters_toberead = _write;
 
 	free(buffer);
 	close(_open);
 
-	return (num_letters_read);
+	return (num_letters_toberead);
 }
