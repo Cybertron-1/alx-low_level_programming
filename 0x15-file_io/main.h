@@ -1,7 +1,7 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-/** standard header files **/
+/** standard header files by kobbycyber **/
 
 #include <stdio.h>
 #include <stdlib.h>
